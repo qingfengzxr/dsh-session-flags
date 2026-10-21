@@ -2,6 +2,8 @@
 // standard props (sessionId, displayTitle, menu state) this plugin registers
 // against; without them the slot keys below are unknown to the compiler.
 import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
+import type {} from '@deepseek-ai/dsh-client-ui-session/client'
+import type {} from '@deepseek-ai/dsh-client-ui-sidebar/client'
 import type {} from '@deepseek-ai/dsh-client-ui-workspace/client'
 import type { InjectFace, PropsLocale, PropsRuntime, TranslateNS } from '@deepseek-ai/dsh-client-ui-slots'
 import type { FlagColorId } from '../shared/palette'
@@ -44,6 +46,20 @@ export interface OverlayInjected {
 }
 
 /**
+ * Business face of the framed "Flagged sessions" panel entry.
+ *
+ * Navigation is delegated to the Workspace UI service (`openSession`), whose
+ * ownership of Session selection belongs to ui-workspace; the panel only names
+ * the target. Clearing a flag is the same Host mutation the row action uses.
+ */
+export interface FlagPanelInjected extends FlagsHookInjected {
+  ensureLoaded(): void
+  openSession(sessionId: string): void
+  clearFlag(sessionId: string): void
+  openManager(): void
+}
+
+/**
  * Composed props of each registered entry: owner share + standard kit from the
  * framework, the locale `t` seat, and this plugin's business face (whose
  * `hooks` become selector hooks such as `useFlags`).
@@ -69,6 +85,18 @@ export type RowHoverProps = PropsRuntime<'sidebar.session.row.hover'> &
 
 /** Composed props of the `shell.overlay` dialog entry. */
 export type OverlayProps = PropsRuntime<'shell.overlay'> & PropsLocale<Namespace> & InjectFace<OverlayInjected>
+
+/**
+ * Composed props of the central flagged-session panel.
+ *
+ * The entry is a keyed `main` registration, so besides this plugin's business
+ * face it receives the framework's global standard kit — in particular the
+ * `useSessions` / `useWorkspaces` selector hooks over the Controller snapshots.
+ */
+export type FlagPanelProps = PropsRuntime<'main'> & PropsLocale<Namespace> & InjectFace<FlagPanelInjected>
+
+/** Composed props of the sidebar global-panel icon (owner carries size/active). */
+export type FlagPanelIconProps = PropsRuntime<'sidebar.panellist'>
 
 /** Stringify a branded session id for storage lookups and wire calls. */
 export function sessionKey(sessionId: RowActionProps['sessionId']): string {

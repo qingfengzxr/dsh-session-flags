@@ -164,6 +164,205 @@ export const STYLES = `
   font-size: 12px;
   line-height: 18px;
 }
+
+/* Global "Flagged sessions" panel: a full main-column page. */
+.dsf-page {
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 0 clamp(24px, 4vw, 48px) 48px;
+  overflow: auto;
+  color: var(--dsw-alias-label-primary);
+}
+.dsf-page > * {
+  width: 100%;
+  max-width: 960px;
+  flex: none;
+}
+.dsf-pageHead {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: calc(28px + var(--dsh-frame-top-clearance, 0px));
+}
+.dsf-pageHeading {
+  min-width: 0;
+}
+.dsf-pageTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+}
+.dsf-pageCount {
+  flex: none;
+  border-radius: 999px;
+  background: var(--dsw-alias-bg-layer-3, var(--dsw-alias-interactive-bg-hover));
+  color: var(--dsw-alias-label-secondary);
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.dsf-pageIntro {
+  margin: 4px 0 0;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 13px;
+  line-height: 20px;
+}
+.dsf-toolbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+}
+.dsf-searchWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.dsf-search {
+  width: min(280px, 40vw);
+}
+.dsf-iconButton {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dsw-radius-sm, 8px);
+  background: transparent;
+  color: var(--dsw-alias-label-tertiary);
+  cursor: pointer;
+}
+.dsf-iconButton:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-label-primary);
+}
+.dsf-iconButton:focus-visible {
+  outline: var(--dsw-focus-ring-width, 2px) solid var(--dsw-focus-ring-color, currentColor);
+  outline-offset: 1px;
+}
+.dsf-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.dsf-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dsf-groupHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+}
+.dsf-groupName {
+  flex: none;
+}
+.dsf-groupCount {
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 12px;
+  font-weight: 400;
+}
+.dsf-sessionList {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dsf-sessionItem {
+  display: flex;
+  align-items: center;
+  border-radius: var(--dsw-radius-md, 10px);
+}
+.dsf-sessionItem:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+.dsf-sessionRow {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: var(--dsw-radius-md, 10px);
+  background: transparent;
+  color: var(--dsw-alias-label-primary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.dsf-sessionRow:focus-visible {
+  outline: var(--dsw-focus-ring-width, 2px) solid var(--dsw-focus-ring-color, currentColor);
+  outline-offset: -2px;
+}
+.dsf-sessionTitle {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13.5px;
+  line-height: 20px;
+}
+.dsf-sessionMeta {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 12px;
+  line-height: 18px;
+}
+.dsf-clearFlag {
+  margin-right: 6px;
+  opacity: 0;
+}
+.dsf-sessionItem:hover .dsf-clearFlag,
+.dsf-clearFlag:focus-visible {
+  opacity: 1;
+}
+.dsf-status {
+  margin: 0;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 13px;
+  line-height: 20px;
+}
+.dsf-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0;
+  padding: 24px 0;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 13px;
+  line-height: 20px;
+}
+.dsf-empty p {
+  margin: 0;
+}
 `
 
 /** Remove a previously mounted copy (used only on plugin unload). */

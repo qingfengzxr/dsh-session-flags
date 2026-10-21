@@ -9,6 +9,7 @@ A flag is not a pin: pins reorder the list, flags label it. Use one color for �
 - **Flag row in the session “…” menu.** Between “Fork” and “Archive”, with the current color previewed in the icon.
 - **Named colors.** Every palette color can be renamed (per language, stored per user). The name shows up in the hover card, the picker, and the menu — so the color system can carry your own vocabulary.
 - **Named flag chip in the hover card**, so a colored dot never has to be remembered.
+- **“Flagged sessions” global panel.** A sidebar panel row (next to Plugins / Automation) opens a searchable page that groups every flagged session by color, shows each color's name, and jumps straight back to the conversation.
 - **Bilingual UI** (Simplified Chinese / English) following the GUI language.
 - **Durable, local, private.** Flags live in one JSON document under the DSH home, owned by the plugin's Host half. No network calls, no telemetry, no changes to sessions themselves.
 
@@ -17,6 +18,10 @@ A flag is not a pin: pins reorder the list, flags label it. Use one color for �
 | Flagged row + hover card | Pick a color | Rename the colors |
 | --- | --- | --- |
 | ![Flagged row with the named color chip](docs/screenshots/flagged-row.png) | ![Flag color picker](docs/screenshots/picker.png) | ![Rename each color](docs/screenshots/color-names.png) |
+
+| Flagged sessions panel |
+| --- |
+| ![The flagged sessions panel grouped by color name](docs/screenshots/flagged-panel.png) |
 
 ## Requirements
 
@@ -61,6 +66,9 @@ dsh plugin --profile desktop add /absolute/path/dsh-session-flags-0.1.0.tgz
 | Session “…” menu → **Set flag** | Same dialog, reachable without hovering. |
 | Session hover card | Colored dot + the color's current name. |
 | Dialog → **Manage flag colors** | Rename each of the 8 colors; blank a name to fall back to the localized default. |
+| Sidebar → **Flagged sessions** | Searchable page with every flagged session, grouped by color name. Search matches the session title, its workspace, or the color name. |
+| Panel row hover → **×** | Clear that session's flag without opening the conversation. |
+| Panel header → **Manage colors** | Same color-name manager, right where the list is. |
 
 Choosing “No flag” clears the flag. Names and flags are saved as soon as you confirm; the dialog reports a failure instead of closing when the Host rejects a write.
 
@@ -77,7 +85,7 @@ src/
 
 **Host half** (`name`/`inject`/`apply`). It needs only `ctx.connection` and registers three exact Fetch routes below `/api/dsh-session-flags` (`state`, `set-flag`, `color-names`) with `ctx.connection.fetch.register`. Each response is the Connection convention `{ ok: true, value }` or `{ ok: false, error: { code, message } }`. The document is persisted atomically (write temp file + rename) and mutations are serialized, so concurrent UI actions cannot lose a write.
 
-**Client half.** It registers a locale namespace, one `<style data-plugin-css>` element, and five slot contributions:
+**Client half.** It registers a locale namespace, one `<style data-plugin-css>` element, and six slot contributions:
 
 | Slot | Entry |
 | --- | --- |
@@ -86,8 +94,11 @@ src/
 | `sidebar.workspaces.session.row.action` | `FlagRowAction` — flag button in the hover strip |
 | `sidebar.workspaces.session.menu.item` | `FlagMenuItem` — “Set flag” menu row |
 | `shell.overlay` | `FlagDialog` — picker + color-name manager |
+| `sidebar.panellist` | `FlagPanelIcon` — sidebar row for the flagged-session panel |
 
-All five are registered through `ctx.slots.inject`, so they appear when the owning slot declares itself and are disposed with the plugin. State flows through two observable sources (`FlagsStore`, `DialogStore`) handed to the framework as `hooks`, which yields typed `useFlags(selector)` / `useDialog(selector)` hooks in every seat — no cross-slot imports.
+All six are registered through `ctx.slots.inject`, so they appear when the owning slot declares itself and are disposed with the plugin. State flows through two observable sources (`FlagsStore`, `DialogStore`) handed to the framework as `hooks`, which yields typed `useFlags(selector)` / `useDialog(selector)` hooks in every seat — no cross-slot imports.
+
+**The panel** is a seventh contribution: a keyed entry in the layout's `main` slot under the panel id `dsh-session-flags`. The sidebar row and the page share that id (a panellist list id addresses the matching main panel). The page reads the Session and Workspace Controller snapshots through the framework's standard selector hooks, projects them plus the flag document with `buildFlagPanel` (pure, unit-tested), and navigates by delegating to the Workspace UI service (`uiWorkspace.openSession`). That service is injected through `ctx.inject`, so profiles without the workspace UI still keep every row-level flag feature.
 
 **Why the Host owns storage.** The Desktop host boots `dsh` with `--port 0`, so the GUI gets a different loopback origin on every launch; a browser `localStorage` document would be per-launch. A JSON file under the DSH home is stable across launches, windows, and Web/TUI clients.
 
@@ -98,7 +109,7 @@ All five are registered through `ctx.slots.inject`, so they appear when the owni
 ```bash
 pnpm install
 pnpm typecheck     # tsc --noEmit (strict, noUncheckedIndexedAccess)
-pnpm test          # vitest: palette, Host store, Client store, dialog store, SSR seats
+pnpm test          # vitest: palette, Host store, Client store, dialog store, panel projection, SSR seats
 pnpm build         # tsdown: lib/index.js (ESM, Host) + lib/client.js (CJS ModuleLoader)
 pnpm dev           # tsdown --watch
 ```
