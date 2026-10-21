@@ -12,6 +12,12 @@ A flag is not a pin: pins reorder the list, flags label it. Use one color for â€
 - **Bilingual UI** (Simplified Chinese / English) following the GUI language.
 - **Durable, local, private.** Flags live in one JSON document under the DSH home, owned by the plugin's Host half. No network calls, no telemetry, no changes to sessions themselves.
 
+## Screenshots
+
+| Flagged row + hover card | Pick a color | Rename the colors |
+| --- | --- | --- |
+| ![Flagged row with the named color chip](docs/screenshots/flagged-row.png) | ![Flag color picker](docs/screenshots/picker.png) | ![Rename each color](docs/screenshots/color-names.png) |
+
 ## Requirements
 
 - DeepSeek Harness Desktop (or the Web GUI) **0.2.1-rc.2** or a compatible `0.2.x` build.
