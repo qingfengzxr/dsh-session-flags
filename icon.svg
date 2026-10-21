@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Colored flags">
+  <defs>
+    <clipPath id="banner">
+      <path d="M240 176h560c53 0 96 43 96 96s-43 96-96 96H240z"/>
+    </clipPath>
+  </defs>
+  <rect x="168" y="88" width="72" height="848" rx="36" fill="#6277BA"/>
+  <g clip-path="url(#banner)">
+    <rect x="232" y="168" width="680" height="72" fill="#E5484D"/>
+    <rect x="232" y="240" width="680" height="72" fill="#FFC53D"/>
+    <rect x="232" y="312" width="680" height="72" fill="#0090FF"/>
+  </g>
+</svg>

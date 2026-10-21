@@ -25,10 +25,23 @@ A flag is not a pin: pins reorder the list, flags label it. Use one color for �
 
 ## Requirements
 
-- DeepSeek Harness Desktop (or the Web GUI) **0.2.1-rc.2** or a compatible `0.2.x` build.
+- DeepSeek Harness Desktop (or the Web GUI) **0.2.1-rc.2**. The package declares `engines.dsh: ">=0.2.0-rc.2"`, and named installs are checked against that range before the package manager runs.
 - The plugin is a normal independent DSH plugin package (Host half + Client browser bundle); it installs into a profile, not into the application.
 
 ## Install
+
+### From npm
+
+Published as the unscoped npm package [`dsh-session-flags`](https://www.npmjs.com/package/dsh-session-flags):
+
+```bash
+# Named installs pass the compatibility preflight first (`engines.dsh`), then
+# the package manager adds it; reconciling the profile appends the new bundle
+# to `dsh.profile.bundles`, so it is enabled without a second step.
+dsh plugin --profile desktop add dsh-session-flags
+```
+
+In the GUI, the same install is **Plugins → Add plugin**, typing `dsh-session-flags`. Either way the profile must reload afterwards — restart the Harness so the new Client bundle is registered. On the official DSH Desktop app prefer the app's own **Settings → Plugins** page: that profile belongs to the app's plugin manager, and the CLI cannot change it while the app is running.
 
 ### From a local checkout
 
@@ -56,6 +69,12 @@ pnpm build
 pnpm pack            # dsh-session-flags-0.1.0.tgz (lib/ is included via "files")
 dsh plugin --profile desktop add /absolute/path/dsh-session-flags-0.1.0.tgz
 ```
+
+## Marketplaces
+
+Third-party listings are independent of npm. The community **dsh-market** reads the curated [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) registry; a listing is one pull request that adds `data/plugins/<owner>__<repo>.yml`, and the market app picks the entry up from that registry (usually within a day of the PR merging). The exact submission file and release checklist are in [docs/releasing.md](docs/releasing.md).
+
+The official Harness ships **no plugin market**. Its optional *custom plugin markets* bundle (`@deepseek-ai/dsh-experimental-plugin-market-bundle`) adds a **Discover** tab where the user adds market index sources; the community catalog is published as a format-1 index at `https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json`. Turn it on from **Plugins → More → Experimental plugins → Custom plugin markets**, add that source, and search for `dsh-session-flags`. With the bundle on, the agent can browse the same indexes through the read-only `plugin_market` tool.
 
 ## Usage
 
@@ -116,7 +135,7 @@ pnpm dev           # tsdown --watch
 
 The Client bundle is a CommonJS ModuleLoader factory (`window.__ModuleLoader__.load({ id, factory })`) with `react`, `react/jsx-runtime`, and `@deepseek-ai/*` left external for the running Harness to resolve — the same shape official client packages and other third-party plugins use. `dsh.client.inject` lists the client services/packages the bundle expects loaded first.
 
-Compatibility target: official packages pinned at `0.2.1-rc.2` as dev dependencies for types; the only runtime peer is `@deepseek-ai/cordis ~4.0.5`. The plugin degrades quietly (no marks, no dialog) when a slot or service is missing rather than patching the host or the application.
+Compatibility target: official packages pinned at `0.2.1-rc.2` as dev dependencies for types; the only runtime peer is `@deepseek-ai/cordis ~4.0.5` (optional, supplied by the host loader). `engines.dsh` declares the supported host range (`>=0.2.0-rc.2`), which is also what named installs are preflight-checked against. The plugin degrades quietly (no marks, no dialog) when a slot or service is missing rather than patching the host or the application.
 
 ## Data location
 
@@ -131,6 +150,10 @@ Compatibility target: official packages pinned at `0.2.1-rc.2` as dev dependenci
 ```
 
 Unknown fields and invalid ids are dropped on load, so a partially corrupted file never blocks the feature.
+
+## Releasing
+
+Publishing, GitHub/catalog listing, and market discovery steps live in [docs/releasing.md](docs/releasing.md).
 
 ## License
 

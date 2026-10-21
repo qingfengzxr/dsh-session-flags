@@ -4,12 +4,17 @@
   "description": "Colored, user-named flags for DeepSeek Harness session lists — mark important sessions and find them fast.",
   "type": "module",
   "license": "MIT",
+  "icon": "./icon.svg",
   "keywords": [
     "dsh",
+    "dsh-plugin",
     "deepseek-harness",
+    "deepseek",
     "plugin",
     "sessions",
-    "flags"
+    "session-management",
+    "flags",
+    "ui"
   ],
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,16 +28,20 @@
       "default": "./lib/client.js"
     },
     "./cordis.patch.yml": "./cordis.patch.yml",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "files": [
     "lib/",
     "cordis.patch.yml",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "icon.svg",
+    "locale/*.json"
   ],
   "engines": {
-    "node": "^22.19.0 || >=24.0.0"
+    "node": "^22.19.0 || >=24.0.0",
+    "dsh": ">=0.2.0-rc.2"
   },
   "scripts": {
     "build": "tsdown",
@@ -87,5 +96,10 @@
     "tsdown": "0.23.1",
     "typescript": "5.9.3",
     "vitest": "3.2.7"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": {
+      "optional": true
+    }
   }
 }

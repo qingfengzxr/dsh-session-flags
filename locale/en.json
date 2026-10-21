@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Session Flags (dsh-session-flags)",
+    "description": "Colored, user-named flags for session lists, with a searchable flagged-sessions panel. Flags persist on the Host under the DSH home."
+  }
+}
