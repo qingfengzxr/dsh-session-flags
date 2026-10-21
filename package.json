@@ -5,6 +5,14 @@
   "type": "module",
   "license": "MIT",
   "icon": "./icon.svg",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qingfengzxr/dsh-session-flags.git"
+  },
+  "homepage": "https://github.com/qingfengzxr/dsh-session-flags#readme",
+  "bugs": {
+    "url": "https://github.com/qingfengzxr/dsh-session-flags/issues"
+  },
   "keywords": [
     "dsh",
     "dsh-plugin",
