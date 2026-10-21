@@ -1,25 +1,51 @@
 # dsh-session-flags
 
-Colored flags for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) session lists — mark the sessions that matter, give each color a name of your own, and find them again at a glance.
+<p align="center">
+  <img src="icon.svg" width="88" alt="Colored flags" />
+</p>
 
-A flag is not a pin: pins reorder the list, flags label it. Use one color for “waiting on me”, another for “refactor in progress”, a third for “read tomorrow”; rename the colors to match your own workflow.
+<p align="center">
+  <b>Colored, user-named flags for DeepSeek Harness session lists.</b><br />
+  Mark the sessions that matter, give each color a name of your own, and find them again from a searchable sidebar panel.
+</p>
 
-- **Colored flag on every flagged session row.** A small flag glyph sits in the session-row leading seat (right before the title) while the row is idle; the row's own status dot takes precedence when a session needs attention.
-- **Flag button in the row hover strip.** The same flag is one click away on hover, and its hollow/outlined state tells unflagged rows apart.
-- **Flag row in the session “…” menu.** Between “Fork” and “Archive”, with the current color previewed in the icon.
-- **Named colors.** Every palette color can be renamed (per language, stored per user). The name shows up in the hover card, the picker, and the menu — so the color system can carry your own vocabulary.
-- **Named flag chip in the hover card**, so a colored dot never has to be remembered.
-- **“Flagged sessions” global panel.** A sidebar panel row (next to Plugins / Automation) opens a searchable page that groups every flagged session by color, shows each color's name, and jumps straight back to the conversation.
-- **Bilingual UI** (Simplified Chinese / English) following the GUI language.
-- **Durable, local, private.** Flags live in one JSON document under the DSH home, owned by the plugin's Host half. No network calls, no telemetry, no changes to sessions themselves.
+<p align="center">
+  English | <a href="README.zh.md">中文</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/qingfengzxr/dsh-session-flags/stargazers"><img src="https://img.shields.io/github/stars/qingfengzxr/dsh-session-flags?style=flat-square&label=Stars&logo=github&logoColor=white" alt="Stars" /></a>
+  <a href="https://github.com/qingfengzxr/dsh-session-flags/forks"><img src="https://img.shields.io/github/forks/qingfengzxr/dsh-session-flags?style=flat-square&label=Forks&logo=github&logoColor=white" alt="Forks" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/qingfengzxr/dsh-session-flags?style=flat-square&label=license&color=blue" alt="License: MIT" /></a>
+  <a href="https://www.npmjs.com/package/dsh-session-flags"><img src="https://img.shields.io/npm/v/dsh-session-flags?style=flat-square&label=npm&logo=npm&color=CB3837" alt="npm" /></a>
+  <img src="https://img.shields.io/badge/dsh-%3E%3D0.2.0--rc.2-4A5699?style=flat-square&labelColor=383838" alt="DeepSeek Harness 0.2.1-rc.2" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Web-6B7280?style=flat-square&labelColor=383838" alt="Platform" />
+  <img src="https://img.shields.io/badge/i18n-English%20%7C%20%E4%B8%AD%E6%96%87-30A46C?style=flat-square&labelColor=383838" alt="Bilingual" />
+  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs welcome" />
+</p>
+
+A flag is not a pin: pins reorder the list, flags label it. Use one color for “waiting on me”, another for “refactor in progress”, a third for “read tomorrow” — and rename the colors to match your own workflow.
+
+## Highlights
+
+- **A flag on every flagged session row.** A small flag glyph sits in the session-row leading seat, right before the title, while the row is idle; the row's own status dot takes precedence when a session needs attention.
+- **One click on hover.** The row's hover strip carries a flag button; its hollow state tells unflagged rows apart at a glance.
+- **A “Set flag” row in the session “…” menu.** It sits between “Fork” and “Archive” and previews the current color.
+- **Named colors.** Each of the eight palette colors can be renamed. Names show up in the hover card, the picker, and the menu, so the color system can carry your own vocabulary.
+- **A searchable “Flagged sessions” panel.** A sidebar panel row opens a page that groups every flagged session by color, shows each color's name, and jumps straight back to the conversation. Search matches session titles, workspaces, and color names.
+- **Bilingual UI** (English / Simplified Chinese) following the GUI language.
+- **Durable, local, private.** Flags live in one JSON document under the DSH home, owned by the plugin's Host half. No network calls, no telemetry, no changes to the sessions themselves.
 
 ## Screenshots
 
-| Flagged row + hover card | Pick a color | Rename the colors |
+| Flagged row + named chip | Pick a color | Rename the colors |
 | --- | --- | --- |
 | ![Flagged row with the named color chip](docs/screenshots/flagged-row.png) | ![Flag color picker](docs/screenshots/picker.png) | ![Rename each color](docs/screenshots/color-names.png) |
 
-| Flagged sessions panel |
+| “Flagged sessions” panel |
 | --- |
 | ![The flagged sessions panel grouped by color name](docs/screenshots/flagged-panel.png) |
 
@@ -35,32 +61,26 @@ A flag is not a pin: pins reorder the list, flags label it. Use one color for �
 Published as the unscoped npm package [`dsh-session-flags`](https://www.npmjs.com/package/dsh-session-flags):
 
 ```bash
-# Named installs pass the compatibility preflight first (`engines.dsh`), then
-# the package manager adds it; reconciling the profile appends the new bundle
-# to `dsh.profile.bundles`, so it is enabled without a second step.
+# The compatibility preflight runs first (`engines.dsh`), then the package
+# manager adds it; reconciling the profile appends the new bundle, so the
+# plugin is enabled without a second step.
 dsh plugin --profile desktop add dsh-session-flags
 ```
 
-In the GUI, the same install is **Plugins → Add plugin**, typing `dsh-session-flags`. Either way the profile must reload afterwards — restart the Harness so the new Client bundle is registered. On the official DSH Desktop app prefer the app's own **Settings → Plugins** page: that profile belongs to the app's plugin manager, and the CLI cannot change it while the app is running.
+In the GUI this is **Plugins → Add plugin**, typing `dsh-session-flags`. Either way, reload the profile afterwards — restart the Harness so the new Client bundle is registered. On the official DSH Desktop app prefer the app's own **Settings → Plugins** page: that profile belongs to the app's plugin manager, and the CLI cannot change it while the app is running.
 
 ### From a local checkout
 
 ```bash
 pnpm install
-pnpm build          # produces lib/index.js (Host) and lib/client.js (Client bundle)
-```
+pnpm build          # lib/index.js (Host) + lib/client.js (Client bundle, CJS ModuleLoader)
 
-Then install the package into the profile you run:
-
-```bash
-# The CLI forwards its arguments to pnpm inside the profile directory.
 dsh plugin --profile desktop add file:/absolute/path/to/dsh-session-flags
-
 # or, for a clean isolated profile:
 dsh plugin --profile flags-dev add file:/absolute/path/to/dsh-session-flags
 ```
 
-Restart the Harness (or let the plugin manager reload the profile) and open the **Plugins** page — the bundle and its `dsh-session-flags` row should be enabled. The profile patch layer (`cordis.patch.yml`) is applied automatically by the package's `dsh.bundle.patch` field.
+Restart the Harness and open the **Plugins** page — the bundle and its `dsh-session-flags` row should be enabled. The profile patch layer (`cordis.patch.yml`) is applied automatically through the package's `dsh.bundle.patch` field.
 
 ### From a tarball
 
@@ -83,7 +103,7 @@ The official Harness ships **no plugin market**. Its optional *custom plugin mar
 | Session row, leading seat | Shows the flag color while the row is idle (status dots win while a session needs attention). |
 | Session row, hover strip | Flag button → opens the **Set session flag** dialog. |
 | Session “…” menu → **Set flag** | Same dialog, reachable without hovering. |
-| Session hover card | Colored dot + the color's current name. |
+| Session hover card | Colored dot plus the color's current name. |
 | Dialog → **Manage flag colors** | Rename each of the 8 colors; blank a name to fall back to the localized default. |
 | Sidebar → **Flagged sessions** | Searchable page with every flagged session, grouped by color name. Search matches the session title, its workspace, or the color name. |
 | Panel row hover → **×** | Clear that session's flag without opening the conversation. |
@@ -102,7 +122,7 @@ src/
   client/index.ts Client bundle entry (ModuleLoader factory)
 ```
 
-**Host half** (`name`/`inject`/`apply`). It needs only `ctx.connection` and registers three exact Fetch routes below `/api/dsh-session-flags` (`state`, `set-flag`, `color-names`) with `ctx.connection.fetch.register`. Each response is the Connection convention `{ ok: true, value }` or `{ ok: false, error: { code, message } }`. The document is persisted atomically (write temp file + rename) and mutations are serialized, so concurrent UI actions cannot lose a write.
+**Host half** (`name` / `inject` / `apply`). It needs only `ctx.connection` and registers three exact Fetch routes below `/api/dsh-session-flags` (`state`, `set-flag`, `color-names`) with `ctx.connection.fetch.register`. Each response uses the Connection convention `{ ok: true, value }` or `{ ok: false, error: { code, message } }`. The document is persisted atomically (write temp file + rename) with serialized mutations, so concurrent UI actions cannot lose a write.
 
 **Client half.** It registers a locale namespace, one `<style data-plugin-css>` element, and six slot contributions:
 
@@ -135,7 +155,7 @@ pnpm dev           # tsdown --watch
 
 The Client bundle is a CommonJS ModuleLoader factory (`window.__ModuleLoader__.load({ id, factory })`) with `react`, `react/jsx-runtime`, and `@deepseek-ai/*` left external for the running Harness to resolve — the same shape official client packages and other third-party plugins use. `dsh.client.inject` lists the client services/packages the bundle expects loaded first.
 
-Compatibility target: official packages pinned at `0.2.1-rc.2` as dev dependencies for types; the only runtime peer is `@deepseek-ai/cordis ~4.0.5` (optional, supplied by the host loader). `engines.dsh` declares the supported host range (`>=0.2.0-rc.2`), which is also what named installs are preflight-checked against. The plugin degrades quietly (no marks, no dialog) when a slot or service is missing rather than patching the host or the application.
+Compatibility target: official packages are pinned at `0.2.1-rc.2` as dev dependencies for types; the only runtime peer is `@deepseek-ai/cordis ~4.0.5` (optional, supplied by the host loader). `engines.dsh` declares the supported host range (`>=0.2.0-rc.2`), which is also what named installs are preflight-checked against. The plugin degrades quietly (no marks, no dialog) when a slot or service is missing rather than patching the host or the application.
 
 ## Data location
 
@@ -157,4 +177,4 @@ Publishing, GitHub/catalog listing, and market discovery steps live in [docs/rel
 
 ## License
 
-MIT
+[MIT](LICENSE) © 2026 qingfengzxr
